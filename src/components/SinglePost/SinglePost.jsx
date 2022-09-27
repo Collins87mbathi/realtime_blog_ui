@@ -35,7 +35,7 @@ const SinglePost = ({socket}) => {
     try {
       axiosInstance.defaults.withCredentials = true;
       await axiosInstance.delete('post/ '+ id, {
-        data: { username: user.name },
+        data: { username: user?.name },
       }, {
         withCredentials: true
       });
