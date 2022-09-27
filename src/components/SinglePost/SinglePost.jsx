@@ -9,7 +9,7 @@ import {useSelector} from "react-redux"
 import "./SinglePost.scss"
 import Comments from '../Comments/Comments';
 import { axiosInstance } from '../../config/config'
-const IM = "https://collinsblogs.herokuapp.com/images/"
+const IM = "http://localhost:3001/images/"
 const formatter = buildFormatter(englishStrings);
 
 const SinglePost = ({socket}) => {
@@ -18,7 +18,7 @@ const SinglePost = ({socket}) => {
   const [singlePost, setSinglePost] = useState({});
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [updateMode, setUpdateMode] = useState(false);
+  const [updateMode, setUpdateMode] = useState(false); 
 
   useEffect(() => {
     const fetchSinglePost = async () => {
