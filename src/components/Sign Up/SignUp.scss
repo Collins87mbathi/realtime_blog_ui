@@ -33,11 +33,6 @@
     border: none;
     color: white;
     transition: all ease 1s;
-    &:hover{
-        background: white;
-        color: $color;
-        
-    }
   }
   .errors {
     color: red;
