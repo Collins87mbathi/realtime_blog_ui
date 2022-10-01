@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {FcLike,FcLikePlaceholder} from "react-icons/fc";
 import {BiCommentDetail} from "react-icons/bi";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
 import {useSelector} from 'react-redux';
 import {createImageFromInitials} from "../../utils/getInitials"
 import TimeAgo from 'react-timeago'
@@ -15,16 +15,17 @@ const IM = "https://collinsblogs.herokuapp.com/images/"
 const formatter = buildFormatter(frenchStrings)
 const Post = ({post, socket}) => {
  const user  = useSelector((state)=> state.user.user);
-    let imgSrc = post.userimg;
+let imgSrc = post.userimg;
 let name = post.username;
 const [click, setClick] = useState(false);
 const [like, setLike] = useState(post.likes.length);
 
+//useEffect
 useEffect(()=> {
-setClick(post.likes.includes(user?.id));
-},[user?.id,post.likes]);
-// const {likedPosts, setLikedPosts} = useState([])
-// const user = useSelector((state) => state.user.user);
+setClick(post.likes.includes(post.id));
+},[post.id,post.likes]);
+
+//like function
 const LikeAPost = async () => {
   socket.emit('LikePost', {
     username:user.name,
@@ -33,19 +34,19 @@ const LikeAPost = async () => {
     type:2
   });
    try {
-    
     await axiosInstance.post('likes', {
-     postId : post.id,
+     postId : post.id, 
    }, {
     withCredentials: true
   });
-   setLike(click ? like - 1 : like + 1);
-   setClick(!click);
    } catch (error) {
     console.log(error);
    }
-
+   setLike(click ? like - 1 : like + 1);
+   setClick(!click);
 }
+
+
   return (
     <>
      <div className="post-container">

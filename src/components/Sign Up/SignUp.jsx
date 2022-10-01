@@ -46,7 +46,9 @@ const SignUp = () => {
   }, [formErrors,formValues,isSubmit]);
   const validate = (values) => {
     const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    // eslint-disable-next-line no-useless-escape
+    const regex = "/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i";
+    const regex1 = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
     if (!values.name) {
       errors.name = "Username is required!";
     }
@@ -55,12 +57,13 @@ const SignUp = () => {
     } else if (!regex.test(values.email)) {
       errors.email = "This is not a valid email format!";
     }
+
     if (!values.password) {
       errors.password = "Password is required";
     } else if (values.password.length < 4) {
       errors.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
+    }  else if (!regex1.test(values.password)) {
+      errors.password = "Password must be a minumum of 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character";
     }
     return errors;
   };

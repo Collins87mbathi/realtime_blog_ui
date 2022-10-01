@@ -4,21 +4,24 @@ import {useParams,Link} from 'react-router-dom'
 import TimeAgo from 'react-timeago'
 import englishStrings from 'react-timeago/lib/language-strings/en'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
-import {useSelector} from "react-redux"
+import { savedSuccess} from '../../Redux/Slices/savedSlice';
+import {useDispatch, useSelector} from "react-redux"
 // import axios from 'axios';
 import "./SinglePost.scss"
 import Comments from '../Comments/Comments';
 import { axiosInstance } from '../../config/config'
-const IM = "http://localhost:3001/images/"
+const IM = "https://collinsblogs.herokuapp.com/images/"
 const formatter = buildFormatter(englishStrings);
 
 const SinglePost = ({socket}) => {
   const user = useSelector((state)=> state.user.user);
   const {id} = useParams();
-  const [singlePost, setSinglePost] = useState({});
+  const [savedClick, setSavedClick] = useState(false);
+  const [singlePost, setSinglePost] = useState([]);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateMode, setUpdateMode] = useState(false); 
+ const dispatch  = useDispatch();
 
   useEffect(() => {
     const fetchSinglePost = async () => {
@@ -55,6 +58,11 @@ const SinglePost = ({socket}) => {
       setUpdateMode(false);
     } catch (err) {}
   };
+
+  const savedPost = () => {
+   dispatch(savedSuccess(singlePost));
+  setSavedClick(!savedClick);
+  }
   return (
     <>
     <div className="singlePost">
@@ -74,9 +82,9 @@ const SinglePost = ({socket}) => {
       ) : (
         <div className="singlePostTitleInfo">
           <h4 className="singlePostTitle">{title}</h4>
-          {user.name === singlePost.username && (
+          {user?.name === singlePost.username && (
             <div className="singlePostIcons">
-              
+             <span  className='save-emoji' onClick={savedPost}>{savedClick ? <i className="fa-solid fa-bookmark save"></i> : <i className="fa-regular fa-bookmark save"></i> }</span>
               <i
                 className="far fa-edit edit"
                 onClick={() => setUpdateMode(true)}

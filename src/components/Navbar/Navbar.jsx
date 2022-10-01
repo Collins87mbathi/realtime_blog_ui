@@ -44,8 +44,8 @@ const Navbar = ({notification}) => {
                      </Link>
                     ):(
                       <div  className="topRight">
-                      <li><Link to='/login'><button className="btn">Login</button></Link></li>
-                      <li><Link to='/signup'><button className="btn active-btn">Sign up</button></Link></li>
+                      <li><Link to='/login'><button className="btn-navbar">Login</button></Link></li>
+                      <li><Link to='/signup'><button className="btn-navbar active-btn">Sign up</button></Link></li>
                       </div>
                     )}
               

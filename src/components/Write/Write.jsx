@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import axios from "axios";
+// import axios from "axios";
 import {useSelector} from "react-redux"
 import {axiosInstance} from "../../config/config"
 import {AiOutlinePlusCircle} from "react-icons/ai";
@@ -46,8 +46,7 @@ const handleSubmit = async (e) =>{
 
     newPost.postimg = filename;
     try {
-      axios.defaults.withCredentials = true;
-      await axios.post('upload', data, {
+      await axiosInstance.post('upload', data, {
         withCredentials: true
       });
     } catch (err) {
@@ -55,15 +54,14 @@ const handleSubmit = async (e) =>{
     }
   }
   try {
-    axios.defaults.withCredentials = true;
-    const res  = await axios.post('post/create',
+    
+    const res  = await axiosInstance.post('post/create',
     newPost, {
       withCredentials:true
     }
     );
     //  window.location.replace("/");
     window.location.replace("/post/" + res.data.savedPost.id);
-   console.log(axios.request);
   } catch (err) {
     console.log(err);
   }

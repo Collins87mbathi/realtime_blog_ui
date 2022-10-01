@@ -70,7 +70,7 @@ const Comment = (comment) => {
             )}
             <div className="comment-icon">
              <button className='comment-reply'><MdReply/></button>
-             {user.name === comment.comment.username &&  (
+             {user?.name === comment.comment.username &&  (
                 <>
              <button className='comment-edit'onClick={() => setUpdateMode(true)}><BiEdit/></button>
              <button className='comment-delete' onClick={deleteComments}><MdDelete/></button>

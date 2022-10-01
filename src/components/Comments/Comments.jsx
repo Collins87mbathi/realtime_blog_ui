@@ -37,7 +37,7 @@ const Comments = ({comments, id, socket}) => {
   return (
     <div className='Comments-container'>
     <div className="newcomment">
-        <img src={ ( user?.img !== null ) ? IM + user?.img : createImageFromInitials(500, user?.name , getRandomColor())} alt='avatar'/>
+        <img src={ ( user?.img !== null ) ? IM + user?.img : createImageFromInitials(500, user?.name , getRandomColor())} alt='pic'/>
         <input type="text" placeholder="Add a comment.." onChange={(e)=> setNewComment(e.target.value)} />
         <button className="PostBtn" onClick={commentSubmit}>
             <GrSend/>
