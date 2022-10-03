@@ -35,7 +35,9 @@
 
 .post-emoji {
     display: flex;
-    align-items: center;    
+    align-items: center;
+    gap: 15px;
+    margin-left: 10px; 
     span {
         display: flex;
         align-items: center;

@@ -7,6 +7,12 @@ import Save from './Save';
 
 const Saved = () => {
   const saved = useSelector((state)=> state.saved.saved);
+  // const Onclick = async (id) => {
+  //   saved.filter((pos)=>{
+  //   return pos.id !== id;
+  //   })
+  // }
+
 
  console.log(saved);
   return (
@@ -16,7 +22,7 @@ const Saved = () => {
         <h2>Bookmarked</h2>
       </div>
       {saved.map((post)=>{
-     return <Save key={post.id} post = {post}/>
+     return <Save key={post.id}  post = {post}/>
       })}
     </div>
   )

@@ -5,6 +5,11 @@
     gap: 30px;
 }
 
+.delete-save {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 .saved-nav {
     .arrow {
         font-size: 1.6rem;
@@ -50,6 +55,11 @@
             width: 150px;
             height: 150px;
         }
+
+        .delete-save {
+          font-size: 1.8rem;
+        }
+        
         .save-details {
           h3 {
             font-size: 1.5rem;

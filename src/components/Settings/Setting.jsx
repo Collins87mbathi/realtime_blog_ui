@@ -48,10 +48,7 @@ const Setting = () => {
   
         updatedUser.img = filename;
         try {
-          axiosInstance.defaults.withCredentials = true;
-          await axiosInstance.post('upload', data, {
-            withCredentials: true
-          });
+          await axiosInstance.post('upload', data);
         } catch (err) {
           console.log(err);
         }
@@ -60,7 +57,7 @@ const Setting = () => {
       try {
         axiosInstance.defaults.withCredentials = true;
         const res = await axiosInstance.put(`user/${user.id}`, updatedUser, {
-          withCredentials: true
+          headers: { token: `Bearer ${user.token}` }
         });
         setSuccess(true);
         res.data && window.location.reload("/");

@@ -2,13 +2,14 @@ import React,{useState,useEffect} from 'react'
 import {FcLike,FcLikePlaceholder} from "react-icons/fc";
 import {BiCommentDetail} from "react-icons/bi";
 import {Link} from "react-router-dom";
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {createImageFromInitials} from "../../utils/getInitials"
 import TimeAgo from 'react-timeago'
 import frenchStrings from 'react-timeago/lib/language-strings/en'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 import {getRandomColor} from "../../utils/getRandomColor"
 import { axiosInstance } from '../../config/config';
+import { savedSuccess} from '../../Redux/Slices/savedSlice';
 // import axios from 'axios';
 // import {BASE_URL} from "../../config/config";
 const IM = "https://collinsblogs.herokuapp.com/images/"
@@ -19,12 +20,26 @@ let imgSrc = post.userimg;
 let name = post.username;
 const [click, setClick] = useState(false);
 const [like, setLike] = useState(post.likes.length);
-
+const [savedClick, setSavedClick] = useState(false);
+const [singlePost, setSinglePost] = useState([]);
+const dispatch  = useDispatch();
 //useEffect
 useEffect(()=> {
-setClick(post.likes.includes(post.id));
-},[post.id,post.likes]);
+// eslint-disable-next-line array-callback-return
+post.likes.map((like) => {
+ if (like.userId === user.id && like.postId === post.id) {
+  return setClick(true);
+ }
+})
+},[post.likes,user.id,post.id]);
 
+useEffect(() => {
+  const fetchSinglePost = async () => {
+    const res = await axiosInstance.get('post/' + post.id);
+    setSinglePost(res.data.singlepost);
+  };
+  fetchSinglePost();
+}, [post.id]);
 //like function
 const LikeAPost = async () => {
   socket.emit('LikePost', {
@@ -35,18 +50,22 @@ const LikeAPost = async () => {
   });
    try {
     await axiosInstance.post('likes', {
-     postId : post.id, 
+     userId : user.id,postId:post.id 
    }, {
-    withCredentials: true
+    headers: { token: `Bearer ${user.token}` }
   });
+  setLike(click ? like - 1 : like + 1);
+   setClick(!click);
+
    } catch (error) {
     console.log(error);
    }
-   setLike(click ? like - 1 : like + 1);
-   setClick(!click);
+   
 }
-
-
+const savedPost = () => {
+  dispatch(savedSuccess(singlePost));
+ setSavedClick(!savedClick);
+ }
   return (
     <>
      <div className="post-container">
@@ -67,6 +86,7 @@ const LikeAPost = async () => {
         <div className="post-emoji">
         <span className='like-emoji' onClick={LikeAPost}>{click ?  <FcLike/> : <FcLikePlaceholder/> } {like}</span>
         <span><BiCommentDetail/>{post.comments?.length}</span>
+        <span  className='save-emoji' onClick={savedPost}>{savedClick ? <i className="fa-solid fa-bookmark save"></i> : <i className="fa-regular fa-bookmark save"></i> }</span>
       </div>
       </div>
         </>

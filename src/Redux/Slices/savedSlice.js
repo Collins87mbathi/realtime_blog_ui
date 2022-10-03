@@ -25,6 +25,12 @@ const savedSlice = createSlice({
         state.saved = [];
         state.state.isFetching = false;
         state.state.success = false;
+    },
+    removesave : (state, action) => {
+        state.saved.filter((save)=>{
+         return save.id !== action.payload.id
+        })
+
     }
     
     }
@@ -33,7 +39,8 @@ const savedSlice = createSlice({
 export const {
       setIsFetching,
       savedSuccess,
-      removeSaved
+      removeSaved,
+      removesave
       
     } = savedSlice.actions;
   

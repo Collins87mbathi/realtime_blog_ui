@@ -20,10 +20,9 @@ const Comment = (comment) => {
    const [updateMode, setUpdateMode] = useState(false);
     const deleteComments = async () => {
         try {
-        axiosInstance.defaults.withCredentials = true;
-        await axiosInstance.delete(`comment/${comment.comment.id}`, {
-          withCredentials: true
-          });
+        await axiosInstance.delete(`comment/${comment.comment.id}`,
+        {header: { token: `Bearer ${user.token}` }}
+        );
         window.location.reload("/")
         } catch (error) {
             
@@ -33,12 +32,11 @@ const Comment = (comment) => {
 
     const updateComments = async () => {
         try {
-            axiosInstance.defaults.withCredentials = true;
             await axiosInstance.put(`comment/${comment.comment.id}`, {
               desc: commentdesc,
-            }, {
-                withCredentials: true
-              });
+            },
+            {headers: { token: `Bearer ${user.token}` }}
+            );
 
             setUpdateMode(false);
             window.location.reload("/")
@@ -57,7 +55,7 @@ const Comment = (comment) => {
                 <div className="onediting">
                <input
                type="text"
-               placeholder=""
+               placeholder={comment.comment.desc}
                value={commentdesc}
                className="commentInput"
                autoFocus={true}

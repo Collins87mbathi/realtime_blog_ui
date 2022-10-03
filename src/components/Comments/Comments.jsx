@@ -21,15 +21,15 @@ const Comments = ({comments, id, socket}) => {
       type:1
     });
 
-    axiosInstance.defaults.withCredentials = true;
+    
    const res = await axiosInstance.post(`comment/${id}/create`, {
      desc:newComment,
      userId: user.id,
      username: user.name,
      userimg: user.img
-   }, {
-    withCredentials: true
-  });
+   },
+   {headers: { token: `Bearer ${user.token}` }}
+   );
 
   res.data && window.location.reload();
   }

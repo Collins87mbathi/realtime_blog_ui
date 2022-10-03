@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import {Link} from "react-router-dom";
 import {useDispatch} from 'react-redux';
 // import axios from 'axios';
@@ -9,114 +9,75 @@ import { axiosInstance } from '../../config/config';
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const initialValues = { name: "", email: "", password: "" };
-  const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [userdata, setUserdata] = useState({
+    name:"",
+    email: "",
+    password: "",
+  });
+  const [serverErrors, setServerErrors] = useState([]);
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    setUserdata((initial) => {
+      return { ...initial, [e.target.name]: e.target.value };
+    });
   };
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
-    setIsSubmit(true);
     setLoading(true);
     dispatch(setIsFetching());
   try {
-    // axios.defaults.withCredentials = true;
-    const res = await axiosInstance.post('user/register', formValues);
+    const res = await axiosInstance.post('user/register', userdata);
     setLoading(false);
     res.data && window.location.replace("#/login");
   } catch (error) {
     dispatch(setLoginFailure());
     setLoading(false);
-    console.log(error);
+    setServerErrors(error.response.data);
+    
   }
   };
 
-  useEffect(() => {
-    
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
-    }
-  }, [formErrors,formValues,isSubmit]);
-  const validate = (values) => {
-    const errors = {};
-    // eslint-disable-next-line no-useless-escape
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.name) {
-      errors.name = "Username is required!";
-    }
-    if (!values.email) {
-      errors.email = "Email is required!";
-    } else if (!regex.test(values.email)) {
-      errors.email = "This is not a valid email format!";
-    }
-
-    if (!values.password) {
-      errors.password = "Password is required";
-    } else if (values.password.length < 4) {
-      errors.password = "Password must be more than 4 characters";
-    } 
-    return errors;
-  };
-
+  
   return (
-    <div className="signup">
-    {/* {Object.keys(formErrors).length === 0 && isSubmit ? (
-      <div className=" message success">Signed in successfully</div>
-    ) : (
-      <div className=" message success">Signed in successfully</div> 
-    )} */}
-
-    <form onSubmit={handleSubmit}>
-      <h1>Sign Up</h1>
-      <div className="divider"></div>
-      <div className="form">
-        <div className="field">
-          <label>name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="name"
-            value={formValues.name}
-            onChange={handleChange}
-            className="input"
-          />
-        </div>
-        <p className="errors">{formErrors.name}</p>
-        <div className="field">
-          <label>Email</label>
-          <input
-            type="text"
-            name="email"
-            placeholder="Email"
-            value={formValues.email}
-            onChange={handleChange}
-            className="input"
-          />
-        </div>
-        <p className="errors">{formErrors.email}</p>
-        <div className="field">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formValues.password}
-            onChange={handleChange}
-            className="input"
-          />
-        </div>
-        <p className="errors">{formErrors.password}</p>
-        <button className="signup-button"  disabled={loading ? true : false}>{loading ?  <i className="fa fa-spinner fa-spin"></i> : "submit"}</button>
-      </div>
+    <div className="register">
+    <span className="registerTitle">Register</span>
+    <form className="registerForm" onSubmit={handleSubmit}>
+      <label>name</label>
+      <input
+        type="text"
+        name='name'
+        className="registerInput"
+        placeholder="Enter your username..."
+        onChange={(e) => handleChange(e)}
+      />
+      <label>Email</label>
+      <input
+        type="text"
+        name='email'
+        className="registerInput"
+        placeholder="Enter your email..."
+        onChange={(e) => handleChange(e)}
+      />
+      <label>Password</label>
+      <input
+        type="password"
+        name='password'
+        className="registerInput"
+        placeholder="Enter your password..."
+        onChange={(e) => handleChange(e)}
+      />
+      <button className="registerButton" type="submit"   disabled={loading ? true : false}>
+      {loading ? <i className="fa fa-spinner fa-spin"></i> : "Register"}
+      </button>
     </form>
-    <span>if you already have an account please log in here <Link to="/login">Log in</Link></span>
+    <button className="registerLoginButton">
+      <Link className="link" to="/login">
+        Login
+      </Link>
+    </button>
+    {serverErrors && <span className='error-message' style={{color:"red", marginTop:"10px"}}>{serverErrors}</span>}
   </div>
   )
 }

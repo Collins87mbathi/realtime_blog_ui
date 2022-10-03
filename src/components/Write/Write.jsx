@@ -47,23 +47,22 @@ const handleSubmit = async (e) =>{
     newPost.postimg = filename;
     try {
       await axiosInstance.post('upload', data, {
-        withCredentials: true
+        header: { token: `Bearer ${user.token}` }
       });
     } catch (err) {
-      console.log(err);
+      window.alert(err.data.response);
     }
   }
   try {
     
     const res  = await axiosInstance.post('post/create',
-    newPost, {
-      withCredentials:true
-    }
+    newPost, 
+    {headers: { token: `Bearer ${user.token}` }}
     );
     //  window.location.replace("/");
     window.location.replace("/post/" + res.data.savedPost.id);
   } catch (err) {
-    console.log(err);
+    window.alert(err.data.response);
   }
 }
 
