@@ -27,11 +27,11 @@ const dispatch  = useDispatch();
 useEffect(()=> {
 // eslint-disable-next-line array-callback-return
 post.likes.map((like) => {
- if (like.userId === user.id && like.postId === post.id) {
+ if (like.userId === user?.id && like.postId === post.id) {
   return setClick(true);
  }
 })
-},[post.likes,user.id,post.id]);
+},[post.likes,user?.id,post.id]);
 
 useEffect(() => {
   const fetchSinglePost = async () => {
@@ -50,9 +50,9 @@ const LikeAPost = async () => {
   });
    try {
     await axiosInstance.post('likes', {
-     userId : user.id,postId:post.id 
+     userId : user?.id,postId:post.id 
    }, {
-    headers: { token: `Bearer ${user.token}` }
+    headers: { token: `Bearer ${user?.token}` }
   });
   setLike(click ? like - 1 : like + 1);
    setClick(!click);
