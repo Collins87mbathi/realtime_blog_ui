@@ -9,7 +9,7 @@ import {useSelector} from "react-redux"
 import "./SinglePost.scss"
 import Comments from '../Comments/Comments';
 import { axiosInstance } from '../../config/config'
-const IM = "http://localhost:3001/images/"
+const IM = "https://collinsblogs.herokuapp.com/images/"
 const formatter = buildFormatter(englishStrings);
 
 const SinglePost = ({socket}) => {
