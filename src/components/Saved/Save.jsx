@@ -2,7 +2,7 @@ import React from 'react'
 import {AiFillDelete} from "react-icons/ai";
 import {useDispatch} from 'react-redux';
 import { removesave } from '../../Redux/Slices/savedSlice';
-const IM = "http://localhost:3001/images/"
+const IM = "https://collinsblogs.herokuapp.com/images/"
 const Save = ({post}) => {
 const dispatch = useDispatch();
 
